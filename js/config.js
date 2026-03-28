@@ -12,12 +12,12 @@
    🔥 FIREBASE — Remplacez par votre config
    ────────────────────────────────────────────── */
 var FIREBASE_CONFIG = {
-  apiKey: "AIzaSyA2IZXS-vpwu1s6KTbq8zpucBaWwsulRaA",
-  authDomain: "datasuit-soutenance.firebaseapp.com",
-  projectId: "datasuit-soutenance",
-  storageBucket: "datasuit-soutenance.firebasestorage.app",
-  messagingSenderId: "740145202114",
-  appId: "1:740145202114:web:7b1264738e0bf589c9cc5b"
+  apiKey: "AIzaSyDIIA0thU_m3BG9daFgNMbxrP601dac_J0",
+  authDomain: "datasuits-soutenance.firebaseapp.com",
+  projectId: "datasuits-soutenance",
+  storageBucket: "datasuits-soutenance.firebasestorage.app",
+  messagingSenderId: "481372502136",
+  appId: "1:481372502136:web:7b1264738e0bf589c9cc5b"
 };
 
 /* ──────────────────────────────────────────────
