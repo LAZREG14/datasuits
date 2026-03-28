@@ -28,7 +28,7 @@ var GITHUB_BASE = 'https://github.com/DataSuits/projets-soutenances';
 /* ──────────────────────────────────────────────
    🖼️ LOGO — URL du logo DataSuits
    ────────────────────────────────────────────── */
-var LOGO_URL = 'https://cdn.prod.website-files.com/68dbfb6770149c725a7a99b4/68dbfcd28181fd6d12b140ac_logo.avif';
+var LOGO_URL = 'https://raw.githubusercontent.com/lazreg14/datasuits/main/assets/ds_logo.png';
 
 /* ──────────────────────────────────────────────
    👨‍🏫 FORMATEURS — Identifiants et profils
