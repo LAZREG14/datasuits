@@ -45,8 +45,8 @@ var FORMATEURS = [
     pass: 'datasuits2026',
     prenom: 'Mustapha',
     nom: 'LAZREG',
-    titre: 'Responsable pédagogique — Data Science & ML',
-    spec: 'ML, Python, Deep Learning, Pandas',
+    titre: 'Formateur — Python & SQL',
+    spec: 'ML, Python, Deep Learning, Pandas, NLP, LLM',
     color: 'linear-gradient(135deg, #00e5ff, #3b82f6)',
     photo: 'https://ui-avatars.com/api/?name=Mustapha+Lazreg&background=0a0e1a&color=00e5ff&size=200&bold=true&font-size=0.33',
     online: true
@@ -57,8 +57,8 @@ var FORMATEURS = [
     pass: 'datasuits2026',
     prenom: 'Samy',
     nom: 'WAHBI',
-    titre: 'Formateur — BI & Visualisation',
-    spec: 'Power BI, Excel, SQL, Tableau',
+    titre: 'Responsable du parcours Data Analyst chez DataSuits',
+    spec: 'Excel, ML, Python',
     color: 'linear-gradient(135deg, #a855f7, #ec4899)',
     photo: 'https://ui-avatars.com/api/?name=Samy+Wahbi&background=0a0e1a&color=a855f7&size=200&bold=true&font-size=0.33',
     online: true
@@ -69,8 +69,8 @@ var FORMATEURS = [
     pass: 'datasuits2026',
     prenom: 'Reda',
     nom: 'SOUNNI',
-    titre: 'Formateur — BDD & Data Engineering',
-    spec: 'MySQL, PostgreSQL, ETL, Python',
+    titre: 'Formateur — Power BI & SQL',
+    spec: 'MySQL, PowerBI, ML, Python',
     color: 'linear-gradient(135deg, #10b981, #00e5ff)',
     photo: 'https://ui-avatars.com/api/?name=Reda+Sounni&background=0a0e1a&color=10b981&size=200&bold=true&font-size=0.33',
     online: false
