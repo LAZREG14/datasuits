@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>DataSuits — Projets de soutenance Data Analyst & IA</title>
+  <meta name="description" content="DataSuits — Projets de soutenance, banque de sujets et ressources pour la formation Data Analyst & Intelligence Artificielle."/>
+  <link rel="icon" href="https://cdn.prod.website-files.com/68dbfb6770149c725a7a99b4/68dbfcd28181fd6d12b140ac_logo.avif" type="image/avif"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div id="bgC"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div></div>
+<div id="loadingScreen"><div class="loader"></div><div class="loader-text">Chargement de DataSuits…</div><div class="loader-sub">Connexion à Firebase</div></div>
+<div class="fb-st" id="fbSt" style="display:none"><span class="fb-d"></span><span id="fbLb"></span></div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="hidden">
+  <div class="lc">
+    <div class="lc-logo"><img src="https://cdn.prod.website-files.com/68dbfb6770149c725a7a99b4/68dbfcd28181fd6d12b140ac_logo.avif" alt="DataSuits"/></div>
+    <h2>Data<span>Suits</span></h2>
+    <p class="sub">Formation Data Analyst & Intelligence Artificielle</p>
+    <label>Identifiant</label><input type="text" id="loginUser" placeholder="Votre identifiant" autocomplete="off"/>
+    <label>Mot de passe</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div class="lc-err" id="loginErr">Identifiant ou mot de passe incorrect.</div>
+    <button class="lc-btn" onclick="doLogin()">Espace Formateur</button>
+    <div class="lc-sep">ou</div>
+    <button class="lc-guest" onclick="guestLogin()">Accéder en tant qu'Apprenant →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <nav class="nav"><div class="nav-in">
+    <a href="#" class="brand" onclick="go('realisations');return false"><img src="https://cdn.prod.website-files.com/68dbfb6770149c725a7a99b4/68dbfcd28181fd6d12b140ac_logo.avif" alt="DS"/><div class="brand-name">Data<span>Suits</span></div></a>
+    <div class="nav-links" id="navLinks">
+      <button class="nl active" data-page="realisations" onclick="go('realisations')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>Réalisations</button>
+      <button class="nl" data-page="sujets" onclick="go('sujets')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Sujets imposés</button>
+      <button class="nl" data-page="quiz" onclick="go('quiz')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5"/><circle cx="12" cy="12" r="10"/></svg>Quiz</button>
+      <button class="nl" data-page="about" onclick="go('about')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Formation</button>
+      <button class="nl" data-page="favoris" onclick="go('favoris')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Favoris<span class="dot" id="favDot"></span></button>
+      <button class="nl nav-admin" data-page="dashboard" onclick="go('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>Dashboard</button>
+      <div class="uc" id="userChip"></div>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </div></nav>
+
+  <header class="hero">
+    <div class="hero-logo"><img src="https://cdn.prod.website-files.com/68dbfb6770149c725a7a99b4/68dbfcd28181fd6d12b140ac_logo.avif" alt="DataSuits"/></div>
+    <div class="hero-badge"><span class="hero-dot"></span> DataSuits — Formation Data Analyst & IA</div>
+    <h1>Explorez les projets<br><em>de nos apprenants</em></h1>
+    <p>Soutenances encadrées, sujets imposés avec datasets, quiz interactif et ressources pédagogiques — tout l'univers DataSuits.</p>
+    <div class="stats" id="statsBar"></div>
+  </header>
+  <div class="fm-sec"><p class="sec-sm">Équipe pédagogique & Encadrants</p><div class="fm-row" id="fmRow"></div></div>
+
+  <main class="main">
+    <!-- REALISATIONS -->
+    <section class="page active" id="page-realisations">
+      <div class="sec-head"><div><h2>Réalisations & Soutenances</h2><p>Projets validés par nos apprenants.</p></div><button class="add-btn" onclick="openAddProject()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter</button></div>
+      <div class="toolbar"><div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="searchR" placeholder="Rechercher…" oninput="filterR()"/></div><div class="filters" id="filtersR"></div></div>
+      <div class="grid" id="gridR"></div><div class="empty" id="emptyR" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><p>Aucun projet trouvé.</p></div>
+    </section>
+    <!-- SUJETS -->
+    <section class="page" id="page-sujets">
+      <div class="sec-head"><div><h2>Sujets imposés</h2><p>Choisissez votre projet de fin de parcours — dataset et énoncé PDF inclus.</p></div><button class="add-btn" onclick="openAddSubject()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter</button></div>
+      <div class="toolbar"><div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input id="searchS" placeholder="Rechercher…" oninput="filterS()"/></div><div class="filters" id="filtersS"></div></div>
+      <div class="grid" id="gridS"></div><div class="empty" id="emptyS" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><p>Aucun sujet trouvé.</p></div>
+    </section>
+    <!-- QUIZ -->
+    <section class="page" id="page-quiz"><div class="sec-head"><div><h2>Quiz Data & IA</h2><p>Testez vos connaissances.</p></div></div><div class="quiz-box" id="quizBox"></div></section>
+    <!-- ABOUT -->
+    <section class="page" id="page-about">
+      <div class="about-hero"><h2>À propos de <span style="background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">DataSuits</span></h2><p>Organisme de formation spécialisé en Data Analyse et Intelligence Artificielle. Nous formons les talents de demain à travers un parcours intensif mêlant théorie et projets concrets.</p></div>
+      <div class="about-grid">
+        <div class="about-card"><div class="ab-i" style="background:rgba(0,229,255,.1);color:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><h4>Formation intensive</h4><p>6 mois couvrant Excel, SQL, Python, Power BI et Machine Learning avec des cas réels.</p></div>
+        <div class="about-card"><div class="ab-i" style="background:rgba(168,85,247,.1);color:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>3 formateurs experts</h4><p>Mustapha LAZREG, Samy WAHBI et Reda SOUNNI accompagnent chaque apprenant.</p></div>
+        <div class="about-card"><div class="ab-i" style="background:rgba(16,185,129,.1);color:var(--emerald)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h4>Projets sur données réelles</h4><p>Datasets réels, problématiques métier et soutenance devant jury professionnel.</p></div>
+        <div class="about-card"><div class="ab-i" style="background:rgba(236,72,153,.1);color:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><h4>Choix du sujet</h4><p>L'apprenant peut proposer son propre sujet ou choisir un sujet imposé parmi notre banque.</p></div>
+      </div>
+      <h3 style="font-size:16px;font-weight:700;margin-top:30px;margin-bottom:12px">Programme de formation</h3>
+      <div id="programList"></div>
+    </section>
+    <!-- FAVORIS -->
+    <section class="page" id="page-favoris"><div class="sec-head"><div><h2>Mes Favoris</h2></div></div><div class="grid" id="gridFav"></div><div class="fav-empty" id="emptyFav" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><p>Aucun favori.</p></div></section>
+    <!-- DASHBOARD -->
+    <section class="page" id="page-dashboard"><div class="sec-head"><div><h2>Dashboard</h2><p>Réservé formateurs.</p></div></div><div class="stats" id="dashKpis" style="border:none;justify-content:flex-start;gap:20px;padding:0 0 12px;margin-bottom:0;border-bottom:1px solid var(--brd)"></div><div class="dash-grid"><div class="dc"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>Technologies</h4><div id="techBars"></div></div><div class="dc"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Promotions</h4><div id="promoBars"></div></div><div class="dc"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Activité</h4><div id="actFeed"></div></div><div class="dc"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sujets imposés</h4><div id="subjectStats"></div></div></div></section>
+  </main>
+  <footer class="footer">&copy; 2026 <a href="#">DataSuits</a> — Formation Data Analyst & IA &nbsp;|&nbsp; Hébergé sur <a href="https://pages.github.com" target="_blank">GitHub Pages</a></footer>
+</div>
+<button class="stt" id="stt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div class="toast-c" id="toasts"></div>
+<div class="mo" id="mo" onclick="if(event.target===this)closeMo()"><div class="md" id="moC"></div></div>
+
+  <!-- JavaScript — Ordre d'import important -->
+  <script src="js/config.js"></script>   <!-- Configuration (Firebase, formateurs, technos) -->
+  <script src="js/data.js"></script>     <!-- Données initiales (projets, sujets, quiz) -->
+  <script src="js/firebase.js"></script> <!-- Opérations Firebase (CRUD, sync) -->
+  <script src="js/ui.js"></script>       <!-- Rendu interface (cards, dashboard, quiz) -->
+  <script src="js/app.js"></script>      <!-- Logique app (auth, navigation, filtres, init) -->
+</body>
+</html>
